@@ -55,9 +55,6 @@ endif
 ifeq ($(origin CONFIG_ASFLAGS),undefined)
     CONFIG_ASFLAGS :=
 endif
-ifeq ($(origin CONFIG_SSTRIP),undefined)
-    CONFIG_SSTRIP :=
-endif
 ifeq ($(origin CONFIG_CROSS_COMPILE),undefined)
     CONFIG_CROSS_COMPILE :=
 endif
@@ -133,7 +130,6 @@ define fn_process_sources
     $(tgt)_OBJCOPY := $$(CROSS_COMPILE)objcopy
     $(tgt)_OBJDUMP := $$(CROSS_COMPILE)objdump
     $(tgt)_STRIP := $$(CROSS_COMPILE)strip
-    $(tgt)_SSTRIP := $$(SSTRIP)
 
     # remember target for each object
     $$(foreach F,$$(addsuffix _TGT,$$($(tgt)_BASENAME)),$$(eval $$(F) := $(tgt)))
@@ -209,11 +205,7 @@ define fn_exec_rule
     $$(eval $$(fn_elf_rule))
     $(tgt): $(tgt).elf
 	cp $$< $$@
-    ifeq ($$($(tgt)_SSTRIP),)
 	$$($(tgt)_STRIP) -s $$@
-    else
-	sstrip $$@
-    endif
 endef
 
 #
@@ -420,7 +412,6 @@ define fn_process_mkfile
     ASFLAGS := $(CONFIG_ASFLAGS)
     MAP := $(CONFIG_MAP)
     CROSS_COMPILE := $(CONFIG_CROSS_COMPILE)
-    SSTRIP := $(CONFIG_SSTRIP)
 
     # remember MAKEFILE_LIST before including mk file
     prev := $$(abspath $$(MAKEFILE_LIST))
