@@ -138,6 +138,18 @@ COMMON_CONFIG += --disable-nls
 COMMON_CONFIG += --with-debug-prefix-map=\$(CURDIR)=
 ~~~~
 
+An example config.mak for i.MX RT1060 (armv7-m with double precision floating point):
+~~~~
+TARGET = armv7m-linux-musleabihf+fp.dp
+GCC_CONFIG += --enable-languages=c,c++
+GCC_CONFIG += --disable-libquadmath --disable-decimal-float
+GCC_CONFIG += --enable-default-pie
+GCC_CONFIG += --enable-cxx-flags="-ffunction-sections"
+MUSL_CONFIG += --enable-debug
+COMMON_CONFIG += CFLAGS="-g0 -Os" CXXFLAGS="-g0 -Os" LDFLAGS="-s"
+COMMON_CONFIG += --disable-nls
+COMMON_CONFIG += --with-debug-prefix-map=\$(CURDIR)=
+~~~~
 
 Quick Start Guide
 =================
